@@ -3,8 +3,8 @@
     <form class="auth-form">
       <fieldset class="auth-form__fields">
         <legend>Авторизация</legend>
-        <p><label for="email">E-mail</label><input type="email" id="email"></p>
-        <p><label for="password">Пароль</label><input type="password" id="password"></p>
+        <p><label for="email">E-mail</label><input v-model="email" type="email" id="email"></p>
+        <p><label for="password">Пароль</label><input v-model="pass" type="password" id="password"></p>
       </fieldset>
       <p><button v-on:click="login">Войти</button></p>
       <p><router-link to="register"></router-link></p>

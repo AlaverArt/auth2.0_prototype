@@ -15,19 +15,21 @@ export default {
     actions: {
         async login(context, {email, pass}){
             const res = await fetch("http://localhost:8000/login/", {
-                'Content-type':'application/json',
+                headers:{
+                    'Content-type':'application/json'
+                },
                 method:"POST",
-                body: {
+                body: JSON.stringify({
                     'user': {
                         email: email,
                         password: pass
                     }
-                }
+                })
             });
             const data = await res.json();
 
-            context.commit('setAccessToken', data.user.accessToken);
-            context.commit('setRefreshToken', data.user.refreshToken);
+            context.commit('setAccessToken', data.user.access_token);
+            context.commit('setRefreshToken', data.user.refresh_token);
         }
     },
     getters: {  }
