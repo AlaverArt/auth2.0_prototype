@@ -1,7 +1,6 @@
 <template>
 <div>
   <auth-form>
-
   </auth-form>
 </div>
 </template>

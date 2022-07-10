@@ -1,52 +1,51 @@
 <template>
-  <div class="auth-form-main">
-    <form class="auth-form">
-      <fieldset class="auth-form__fields">
-        <legend>Авторизация</legend>
+  <div class="reg-form-main">
+    <form class="reg-form">
+      <fieldset class="reg-form__fields">
+        <legend>Регистрация</legend>
         <p><label for="email">E-mail</label><input v-model="email" type="email" id="email"></p>
-        <p><label for="password">Пароль</label><input v-model="pass" type="password" id="password"></p>
+        <p><label for="password">Пароль</label><input v-model="pass" type="password" minlength="8" id="password"></p>
       </fieldset>
-      <p><button v-on:click="login">Войти</button></p>
-      <p><router-link to="register">Регистрация</router-link></p>
+      <p><button v-on:click="register">Загеристрироваться</button></p>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: "AuthForm",
+  name: "RegisterForm",
   data(){
     return{
-      email:"",
-      pass:""
+      email:'',
+      pass:''
     }
   },
   methods:{
-    login(){
-      this.$store.dispatch('auth/login', {
+    register(){
+      this.$store.dispatch('auth/register', {
         email: this.email,
         pass: this.pass
-      });
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-.auth-form{
+.reg-form{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 50%;
 }
-.auth-form-main{
+.reg-form-main{
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
-.auth-form__fields{
+.reg-form__fields{
   display: flex;
   flex-direction: column;
   align-items: stretch;

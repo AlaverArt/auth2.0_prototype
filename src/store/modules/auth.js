@@ -1,36 +1,59 @@
+import api from "@/store/api";
+
 export default {
     namespaced: true,
     state: () => ({
-        accessToken:"",
-        refreshToken:""
+        isLogin:false,
+        userAlreadyExists:false
     }),
     mutations: {
-        setAccessToken(state, token){
-            state.accessToken = token;
+        loginSuccess(state){
+            state.isLogin = true;
         },
-        setRefreshToken(state, token){
-            state.refreshToken = token;
-        }
+        loginFailure(state){
+            state.isLogin = false;
+        },
+        registerSuccess(state){
+            state.userAlreadyExists = false;
+        },
+        registerFailure(state){
+            state.userAlreadyExists = true;
+        },
     },
     actions: {
+        async register(context, {email, pass}){
+            try{
+                await api.register(email, pass);
+                context.commit('registerSuccess');
+            }catch (err){
+                context.commit('registerFailure');
+                console.log('auth / reg err', err);
+            }
+        },
         async login(context, {email, pass}){
-            const res = await fetch("http://localhost:8000/login/", {
-                headers:{
-                    'Content-type':'application/json'
-                },
-                method:"POST",
-                body: JSON.stringify({
-                    'user': {
-                        email: email,
-                        password: pass
-                    }
-                })
-            });
-            const data = await res.json();
-
-            context.commit('setAccessToken', data.user.access_token);
-            context.commit('setRefreshToken', data.user.refresh_token);
-        }
+            try{
+                await api.login(email, pass);
+                context.commit('loginSuccess');
+            }catch (err){
+                context.commit('loginFailure');
+            }
+        },
+        logout({state, rootState}){
+            api.logout();
+            rootState.user = null;
+            state.isLogin = false;
+        },
+        initFromLS(context){
+          try{
+              api.initFromLS();
+              context.commit('loginSuccess');
+          }catch (err) {
+              context.commit('loginFailure');
+          }
+        },
+        async refreshTokens(){
+            await api.refreshTokens();
+        },
     },
     getters: {  }
 }
